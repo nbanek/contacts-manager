@@ -24,7 +24,7 @@ export class ContactsModeler {
         }
         this.contacts = await response.json();
       } catch (error) {
-        console.error('Error fetching the contacts:', error);
+        console.error('Error fetching the contact:', error);
       }
     }
   
@@ -37,7 +37,7 @@ export class ContactsModeler {
           throw new Error(response.statusText);
         }
       } catch (error) {
-        alert(response.statusText);
+        console.error('Error deleting the contact:', error);
       }
     }
   
@@ -54,10 +54,9 @@ export class ContactsModeler {
           throw new Error(response.statusText)
         } else {
           const result = await response.json();
-          console.log(result);
         }
       } catch (error) {
-        console.log(error);
+        console.error('Error creating contact:', error)
       }
     }
   
@@ -74,10 +73,9 @@ export class ContactsModeler {
           throw new Error(response.statusText)
         } else {
           const result = await response.json();
-          console.log(result);
         }
       } catch (error) {
-        console.log(error);
+        console.error('Error updating contact:', error)
       }
     }
   
