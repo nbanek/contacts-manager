@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Manager</title>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="/javascripts/jquery.js"></script>
+  <script src="/javascripts/handlebars.js"></script>
+  <link rel="stylesheet" href="/stylesheets/app.css">
+
+  <script id="home-display-template" type="text/x-handlebars-template">
+    <fieldset class="home">
+      <div>
+        <button id="btn-add-contact">Add Contact</button>
+        <input id='contact-search' type="text" name="search" placeholder="Search">
+        <fieldset class="tag-checkbox">
+          <legend>Tag filter:</legend>
+          {{#each tags}}
+            <label><input type="checkbox" name="{{this}}" id="{{this}}"> {{this}}</label>
+          {{/each}}
+        </fieldset>
+      </div>
+      <div id="contacts">
+        {{> contacts-partial}}
+      </div>
+    </fieldset>
+  </script>
+
+  <script id="edit-contact-template" type="text/x-handlebars-template">
+    <form id="edit-contact-form">
+      <fieldset>
+        <dl class="input-full-name">
+          <dt><h2>Edit Contact</h2></dt>
+          <dt><label for="name">Full Name (required):</label></dt>
+          <dd><input type="text" id="name" name="full_name" value="{{contact.full_name}}" required pattern="^[A-Z][a-z]+(\s[A-Z][a-z]+)+$"></dd>
+
+          <dt><label for="email">Email (e.g. my@example.com):</label></dt>
+          <dd><input type="email" id="email" name="email" value="{{contact.email}}" pattern=".+@.+"></dd>
+
+          <dt><label for="phone-number">Phone Number (digits only):</label></dt>
+          <dd><input type="tel" id="phone-number" name="phone_number" value="{{contact.phone_number}}" placeholder="##########" pattern="\d+"></dd>
+
+
+          <dt><label for="tags">Tags (Ctrl + click to select multiple tags):</label></dt>
+          <dd>
+            <select name="tags" id="tags" size="7" multiple>
+              {{#each allTags}}
+                <option value="{{this}}" {{ isSelected this ../tags }}>{{this}}</option>
+              {{/each}}
+            </select>
+          </dd>
+          <dd>
+            <button type="button" id="btn-new-add-tag">New tag</button>
+          </dd>
+          <dd>
+            <input type="submit" id="btn-update-contact">
+            <button type="button" id="btn-cancel-edit-contact" class="btn-cancel">Cancel</button>
+          </dd>
+          <input type="hidden" id ="contactId" name="contactId" value="{{contact.id}}">
+        </dl>
+      </fieldset>
+    </form>
+  </script>
+
+  <script id="contact-list-partial" type="text/x-handlebars-template">
+    {{#if contacts}}
+      <ul>
+        {{#each contacts}}
+          <li>
+            <h2>{{this.full_name}}</h2>
+            <p><strong>Email: </strong>{{this.email}}</p>
+            <p><strong>Phone: </strong>{{this.phone_number}}</p>
+            <p><strong>Tags: </strong>{{this.tags}}</p>
+            <button data-id={{this.id}} class="btn-edit-contact">Edit</button>
+            <button data-id={{this.id}} class="btn-delete-contact">Delete</button>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p>There are no contacts matching {{query}}</p>
+    {{/if}}
+  </script>
+
+  <script id="contact-create-template" type="text/x-handlebars-template">
+    <form id="create-contact-form" class="form-add-contact">
+      <fieldset>
+
+        <dl class="input-full-name">
+          <dt><h2>Create Contact</h2></dt>
+          <dt><label for="name">Full Name (required):</label></dt>
+          <dd><input type="text" id="name" name="full_name" required pattern="^[A-Z][a-z]+(\s[A-Z][a-z]+)+$"></dd>
+
+          <dt><label for="email">Email (e.g. my@example.com):</label></dt>
+          <dd><input type="email" id="email" name="email" pattern=".+@.+"></dd>
+
+          <dt><label for="phone-number">Phone Number (digits only):</label></dt>
+          <dd><input type="tel" id="phone-number" name="phone_number" placeholder="Enter #" pattern="\d+"></dd>
+
+
+          <dt><label for="tags">Tags (Ctrl + click to select multiple tags):</label></dt>
+          <dd>
+            <select name="tags" id="tags" size="7" multiple>
+              {{#each tags}}
+                <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </dd>
+
+          <dd>
+            <button type="button" id="btn-new-add-tag">New tag</button>
+          </dd>
+          <dd>
+            <input type="submit" id="btn-create-contact">
+            <button type="button" id="btn-cancel-add-contact" class="btn-cancel">Cancel</button>
+          </dd>
+      </dl>
+      </fieldset>
+    </form>
+  </script>
+  
+  </head>
+  <body>
+    <div>
+      <h1>Contact Manager</h1>
+    </div>
+    <main>
+      <div id="display">
+      </div>
+    </main>
+  </body>
+  <script src="/javascripts/app.js" type="module"></script>
+  </html>
